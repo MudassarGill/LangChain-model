@@ -1,10 +1,10 @@
-from langchain_openai import OpenAI
-from dotenv import load_dotenv
+import os
+from langchain_openai import ChatOpenAI
 
+os.environ["OPENAI_API_KEY"] = "sk-xxxxxxxx"
 
-load_dotenv()
+llm = ChatOpenAI(model="gpt-4o-mini")
 
-llm=OpenAI('gpt-3.5-turbo-instruct')
+response = llm.invoke("What is the capital of Pakistan")
 
-llm.invoke()
-
+print(response.content)

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TinyLlama - AI Assistant</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Background Effects -->
+    <div class="background-effects">
+        <div class="glow blob-1"></div>
+        <div class="glow blob-2"></div>
+        <div class="glow blob-3"></div>
+    </div>
+    
+    <div class="chat-container">
+        <header class="chat-header">
+            <div class="model-info">
+                <div class="avatar">
+                    <i class="fa-solid fa-microchip"></i>
+                </div>
+                <div>
+                    <h1>TinyLlama AI</h1>
+                    <span class="status"><span class="pulse"></span> Online (Local)</span>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button id="clear-chat" title="Clear Chat"><i class="fa-solid fa-broom"></i></button>
+            </div>
+        </header>
+
+        <main class="chat-box" id="chat-box">
+            <div class="message bot-message">
+                <div class="msg-avatar"><i class="fa-solid fa-microchip"></i></div>
+                <div class="msg-bubble glass-panel">
+                    <p>Hello! I am your local TinyLlama model. How can I help you today?</p>
+                </div>
+            </div>
+            <!-- Dynamic Messages will appear here -->
+        </main>
+
+        <footer class="chat-input-area">
+            <div class="input-wrapper glass-panel">
+                <textarea id="message-input" placeholder="Type a message..." rows="1"></textarea>
+                <button id="send-btn" class="send-btn"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+        </footer>
+    </div>
+    
+    <script src="/static/script.js"></script>
+</body>
+</html>

@@ -17,16 +17,17 @@ model=ChatHuggingFace.from_model_id(
 
     }
 )
-
-template=PromptTemplate(
-    template='write a detiled review of the following topic {topic} and also give a rating out of 5',
-    input_variables=["topic"]
-)
-
 parser=JsonOutputParser()
 
-chain=template|model|parser
+template=PromptTemplate(
+    template='Give me the name,age and city of fictional person  \n {format_instructions}',
+    input_variables=[],
+    partial_variables={'format_instructions':parser.get_format_instructions()}
+)
 
-result=chain.invoke({"topic":"iphone 15 pro max"})
 
-print(result)
+prompt=template.format()
+result=model.invoke(prompt)
+final_result=parser.parse(result.content)
+print(final_result)
+

@@ -20,20 +20,22 @@ model=ChatHuggingFace.from_model_id(
 )
 
 schema=[
-    ResponseSchema(name="review",description="review of the topic"),
-    ResponseSchema(name="rating",description="rating out of 5")
+    ResponseSchema(name="fact 1",description="fact 1 about the topic"),
+    ResponseSchema(name="fact 2",description="fact 2 about the topic"),
+    ResponseSchema(name="fact 3",description="fact 3 about the topic"),
+    ResponseSchema(name="fact 4",description="fact 4 about the topic"),
+    ResponseSchema(name="fact 5",description="fact 5 about the topic")
 ]
 
-parser=StrcutureOutputParser(schema=schema)
+parser=StrcutureOutputParser.from_response_schemas(schema)
 
-prompt=PromptTemplate(
-    template='write a detiled review of the following topic {topic} and also give a rating out of 5',
+template=PromptTemplate(
+    template='Give 5 fact about the {topic} \n {format_instructions}',
     input_variables=["topic"],
-    output_parser=parser
+    partial_variables={'format_instructions':parser.get_format_instructions()}
 )
 
-chain=prompt|model|parser
-
-result=chain.invoke({"topic":"Babar Azam"})
-
-print(result)
+promt=template.invoke({"topic":"Babar Azam"})
+result=model.invoke(promt)
+final_result=parser.parse(result.content)
+print(final_result)

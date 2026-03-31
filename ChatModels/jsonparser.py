@@ -1,7 +1,7 @@
 from langchain_huggingface import ChatHuggingFace,HuggingFacePipeline
-from dotenv import load_dotenv
 from langchain_core.prompts import PromptTemplate
-from langchain_core.output_parsers import StrOutputParser
+from langchain_core.output_parsers import JsonOutputParser
+from dotenv import load_dotenv
 import os 
 import numpy as np 
 from typing import TypedDict
@@ -18,25 +18,15 @@ model=ChatHuggingFace.from_model_id(
     }
 )
 
-template1=PromptTemplate(
+template=PromptTemplate(
     template='write a detiled review of the following topic {topic} and also give a rating out of 5',
     input_variables=["topic"]
 )
-template2=PromptTemplate(
-    template='write a 5 line summary of the following text {text}',
-    input_variables=["text"]
-)
 
-parser=StrOutputParser()
+parser=JsonOutputParser()
 
+chain=template|model|parser
 
-chain1 = template1 | model | parser
-chain2 = template2 | model | parser
+result=chain.invoke({"topic":"iphone 15 pro max"})
 
-result1 = chain1.invoke({"topic": "Babar Azam"})
-result2 = chain2.invoke({"text": result1})
-
-print(result2)
-
-
-
+print(result)

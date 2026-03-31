@@ -28,3 +28,13 @@ template2=PromptTemplate(
 )
 
 
+parser=StrOutputParser()
+
+chain1=template1|model|parser|template2|model|parser
+
+
+
+reuslt=chain1.invoke({"topic":"Babar Azam"})
+
+print(reuslt)
+

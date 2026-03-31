@@ -1,7 +1,7 @@
 from langchain_huggingface import ChatHuggingFace,HuggingFacePipeline
 from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser,JsonOutputParser
-from langchain.output_parsers import StrcutureOutputParser,ResponseSchema
+from langchain.output_parsers import StructuredOutputParser, ResponseSchema
 from dotenv import load_dotenv
 import os 
 import numpy as np 
@@ -19,23 +19,27 @@ model=ChatHuggingFace.from_model_id(
     }
 )
 
-schema=[
-    ResponseSchema(name="fact 1",description="fact 1 about the topic"),
-    ResponseSchema(name="fact 2",description="fact 2 about the topic"),
-    ResponseSchema(name="fact 3",description="fact 3 about the topic"),
-    ResponseSchema(name="fact 4",description="fact 4 about the topic"),
-    ResponseSchema(name="fact 5",description="fact 5 about the topic")
+schema = [
+    ResponseSchema(name="fact1", description="fact 1 about the topic"),
+    ResponseSchema(name="fact2", description="fact 2 about the topic"),
+    ResponseSchema(name="fact3", description="fact 3 about the topic"),
+    ResponseSchema(name="fact4", description="fact 4 about the topic"),
+    ResponseSchema(name="fact5", description="fact 5 about the topic")
 ]
 
-parser=StrcutureOutputParser.from_response_schemas(schema)
+parser = StructuredOutputParser.from_response_schemas(schema)
 
-template=PromptTemplate(
-    template='Give 5 fact about the {topic} \n {format_instructions}',
+template = PromptTemplate(
+    template='Give 5 facts about {topic}.\n{format_instructions}',
     input_variables=["topic"],
-    partial_variables={'format_instructions':parser.get_format_instructions()}
+    partial_variables={
+        "format_instructions": parser.get_format_instructions()
+    }
 )
 
-promt=template.invoke({"topic":"Babar Azam"})
-result=model.invoke(promt)
-final_result=parser.parse(result.content)
+prompt = template.invoke({"topic": "Babar Azam"})
+result = model.invoke(prompt)
+
+final_result = parser.parse(result.content)
+
 print(final_result)

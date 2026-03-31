@@ -15,25 +15,25 @@ model=ChatHuggingFace.from_model_id(
     pipeline_kwargs={
         
         "temperature": 0.5,
-        "max_new_tokens": 100,
-        "do_sample": True
+        
     }
 )
 
-class Review(BaseModel):
-    rating: int
-    summary: str
-    sentiment: str
+class Person(BaseModel):
+    name:str=Field(descrption='Name of the person')
+    age=int=Field(descrption='Age of the person')
+    city=str=Field(descrption='City of the person')
 
-parser=PydanticOutputParser(pydantic_object=Review)
+
+parser=PydanticOutputParser(pydantic_object=Person)
 
 template=PromptTemplate(
-    template='Give a review of the following topic {topic} \n {format_instructions}',
-    input_variables=["topic"],
+    template='Genarete the name,age and city of a fictional  {place} person \n {format_instructions}',
+    input_variables=['place'],
     partial_variables={'format_instructions':parser.get_format_instructions()}
 )
 
-prompt=template.invoke({"topic":"Babar Azam"})
+prompt=template.invoke({'place':'Multan'})
 result=model.invoke(prompt)
 final_result=parser.parse(result.content)
 print(final_result)

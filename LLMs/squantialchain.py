@@ -1,7 +1,7 @@
 from langchain_huggingface import HuggingFaceEndpoint,HuggingFacePipeline
 from dotenv import load_dotenv
 from langchain_core.prompts import PromptTemplate
-from langchain_core.output_parsers import StrOutputParser,JsonOutputParser
+from langchain_core.output_parsers import StrOutputParser
 import os 
 import numpy as np 
 
@@ -17,19 +17,20 @@ model=HuggingFacePipeline.from_model_id(
     }
 )
 
-template=PromptTemplate(
-    template='Genarate 5 intersting fact about this {topic}',
+template1=PromptTemplate(
+    template='Generate a detailed report on {topic}',
     input_variables=["topic"]
+)
+template2=PromptTemplate(
+    template='write a 5 pointer summary of the following text \n {text}',
+    input_variables=["text"]
 )
 
 parser=StrOutputParser()
 
 
-chain = template | model | parser
+chain=template1 | model | parser|template2 | model | parser
 
-result = chain.invoke({"topic": "Pakistan"})
+result=chain.invoke({"topic":"Pakistan"})
 
 print(result)
-
-
-chain.get_graph().print_ascii()

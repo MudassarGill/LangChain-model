@@ -23,11 +23,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     sendBtn.addEventListener('click', sendMessage);
 
-    clearBtn.addEventListener('click', () => {
+    clearBtn.addEventListener('click', async () => {
         // Keep only the first bot message
         const firstMessage = chatBox.firstElementChild;
         chatBox.innerHTML = '';
         if(firstMessage) chatBox.appendChild(firstMessage);
+        
+        // Notify backend to clear memory
+        try {
+            await fetch('/clear', { method: 'POST' });
+        } catch(e) {
+            console.error('Failed to clear backend memory:', e);
+        }
     });
 
     async function sendMessage() {

@@ -19,3 +19,18 @@ class LLMClass:
         return {'response':random.choice(response_list)}
 LLM=LLMClass()
 print(LLM.predict('What is AI?'))
+
+
+
+class PromptTemplate:
+    def __init__(self,template,input_variables):
+        self.template=template
+        self.input_variables=input_variables
+    def format(self,input_dict):
+        return self.template.format(**input_dict)
+prompt=PromptTemplate(
+    template='What is {topic}?',
+    input_variables=['topic']
+)
+print(prompt.format({'topic':'AI'}))
+    

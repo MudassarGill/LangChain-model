@@ -1,6 +1,7 @@
 from langchain_huggingface import HuggingFacePipeline,ChatHuggingFace,HuggingFaceEndpoint
 from langchain.core.prompts import PromptTemplate
 from langchain.core.output_parsers import StrOutputParser
+from langchain.schema.runnable import RunnableSequence
 from dotenv import load_dotenv
 
 load_dotenv()

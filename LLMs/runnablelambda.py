@@ -9,8 +9,38 @@ load_dotenv()
 def word_counter(text):
     return len(text.split())
 
+model=HuggingFacePipeline.from_model_id(
+    model_id="TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+    task="text-generation",
+   
+)
 
-lambda_chain=RunnableLambda(word_counter)
+prompt=PromptTemplate(
+    template='write a joke on {topic}',
+    input_variables=["topic"]
+)
 
-result=lambda_chain.invoke("Hello, how are you?")
+
+
+parser=StrOutputParser()
+
+joke_gen_chain=RunnableSequence(
+    prompt,
+    model,
+    parser
+)
+
+parallel_chain=RunnableParallel(
+    {
+        'joke':RunnablePassthrough(),
+        'word_count':RunnableLambda(word_counter)
+    }
+)
+
+final_chain=RunnableSequence(
+    joke_gen_chain,
+    parallel_chain
+)
+
+result=final_chain.invoke({'topic': 'cricket'})
 print(result)

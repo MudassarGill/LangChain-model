@@ -1,5 +1,5 @@
 from langchain_huggingface import HuggingFacePipeline,ChatHuggingFace,HuggingFaceEndpoint
-from langchain_core.runnables import RunnablePassthrough
+from langchain_core.runnables import RunnablePassthrough,RunnableParallel,RunnableSequence
 from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from dotenv import load_dotenv
@@ -35,7 +35,7 @@ joke_gen_chain=RunnableSequence(
 parallel_chain=RunnableParallel(
     {
         'joke':RunnablePassthrough(),
-        'explnations':RunnbleSequence(prompt2,model,parser),
+        'explnations':RunnableSequence(prompt2,model,parser),
     }
 )
 

@@ -15,14 +15,13 @@ model=HuggingFacePipeline.from_model_id(
 )
 
 prompt=PromptTemplate(
-    template='write a detailed report on {topic}',
+    template='write a joke on {topic}',
     input_variables=["topic"]
 )
 
 parser=StrOutputParser()
 
-chain=prompt | model | parser
 
-result=chain.invoke({"topic":"Pakistan"})
-
+chain=RunnableSequence(prompt,model,parser)
+result =chain.invoke({'topic': 'AI'})
 print(result)
